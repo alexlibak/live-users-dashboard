@@ -1,9 +1,9 @@
 'use strict';
 
 const auth = require('./auth');
-const posts = require('./posts');
+const post = require('./post');
 
 module.exports = {
     auth,
-    posts
+    post
 }

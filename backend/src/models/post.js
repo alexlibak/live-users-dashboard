@@ -2,17 +2,18 @@
 
 const { Schema, model } = require('mongoose');
 
-const userSchema = new Schema(
+const postSchema = new Schema(
     {
-        username: {
+        title: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        text: {
             type: String,
             required: true
         },
-        email: {
-            type: String,
-            required: true
-        },
-        password: {
+        userId: {
             type: String,
             required: true
         }
@@ -22,5 +23,5 @@ const userSchema = new Schema(
     }
 );
 
-const User = model('User', userSchema);
-module.exports = User;
+const Post = model('Post', postSchema);
+module.exports = Post;

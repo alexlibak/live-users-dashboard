@@ -1,7 +1,8 @@
 'use strict';
 
 const express = require('express');
-const { auth, posts } = require('./src/routes/index');
+require('./src/db/connection');
+const { auth, post } = require('./src/routes/index');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -11,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(auth);
-app.use(posts);
+app.use(post);
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}`);
