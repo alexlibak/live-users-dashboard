@@ -5,6 +5,12 @@ require('dotenv').config();
 const LOCAL_URI = `${process.env.DB_HOST_LOCAL}:${process.env.DB_PORT_LOCAL}/${process.env.DB_NAME}`;
 const URI = process.env.NODE_ENV === 'dev' ? LOCAL_URI : process.env.DB_URI;
 
+///test
+// const userTest = new User({
+//   name: 'alex-dev',
+//   email: 'alex.libak@gmail.com',
+//   password: 'pass1'
+// });
 
 (async () => {
     try {
@@ -14,6 +20,10 @@ const URI = process.env.NODE_ENV === 'dev' ? LOCAL_URI : process.env.DB_URI;
             useUnifiedTopology: true,
             useFindAndModify: false,
         });
+
+        // const userDB = await userTest.save()
+        // console.log(userDB);
+
     } catch (error) {
         console.error(error);
     }
@@ -29,4 +39,15 @@ mongoose.connection.once('open', _ => {
 
 mongoose.connection.on('error', err => {
   console.error('connection error:', err)
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('Mongoose Disconnected');
+})
+
+process.on('SIGINT', () => {
+  mongoose.connection.close(() => {
+      console.log('Mongoose connection closed on Application Timeout');
+      process.exit(0);
+  })
 });

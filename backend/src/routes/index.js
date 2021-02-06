@@ -1,9 +1,9 @@
 'use strict';
 
-const auth = require('./auth');
-const post = require('./post');
+const authRouter = require('./auth');
+const dashboardRouter = require('./dashboard');
 
 module.exports = {
-    auth,
-    post
+    authRouter,
+    dashboardRouter
 }
