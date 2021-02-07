@@ -1,5 +1,6 @@
 'use strict';
 
+const { ObjectId } = require('mongodb');
 const { Schema, model } = require('mongoose');
 
 const postSchema = new Schema(
@@ -14,7 +15,7 @@ const postSchema = new Schema(
             required: true
         },
         userId: {
-            type: String,
+            type: ObjectId,
             required: true
         }
     },

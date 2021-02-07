@@ -8,7 +8,6 @@ const userSchema = new Schema(
         name: {
             type: String,
             required: true,
-            unique: true,
             trim: true,
             min: 6,
             max: 15
@@ -33,7 +32,6 @@ const userSchema = new Schema(
     }
 );
 
-
 userSchema.statics.findUserByCredentials = async (email, password) => {
     const user = await User.findOne({ email });
     if (!user) {
@@ -51,14 +49,11 @@ userSchema.statics.findUserByCredentials = async (email, password) => {
 // Hash user password before saving it to DB
 userSchema.pre('save', async function (next) {
     const user = this;
-
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8);
     }
-
     next();
 })
-
 
 const User = model('User', userSchema);
 module.exports = User;

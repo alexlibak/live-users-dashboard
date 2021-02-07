@@ -5,12 +5,15 @@ require('dotenv').config();
 const LOCAL_URI = `${process.env.DB_HOST_LOCAL}:${process.env.DB_PORT_LOCAL}/${process.env.DB_NAME}`;
 const URI = process.env.NODE_ENV === 'dev' ? LOCAL_URI : process.env.DB_URI;
 
+const { Post } = require('../models/post');
+
 ///test
 // const userTest = new User({
 //   name: 'alex-dev',
 //   email: 'alex.libak@gmail.com',
 //   password: 'pass1'
 // });
+
 
 (async () => {
     try {
