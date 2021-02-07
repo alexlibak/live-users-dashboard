@@ -5,7 +5,8 @@ const router = Router();
 const User = require('../models/user');
 const { validateLogin, validateSignUp } = require('../middlewares/validation');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'secret';
+require('dotenv').config();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 
 router.post('/signup', validateSignUp, async ({ body: { name, email, password } }, res) => {
@@ -37,14 +38,14 @@ router.post('/login', validateLogin, async ({ body: { email, password } }, res) 
         const token = jwt.sign({ id: user.id, name: user.name }, JWT_SECRET);
         res.cookie('token', token);
 
-        return res.status(200).send({ user, token });
+        return res.status(200).send({ name: user.name, token });
     } catch (err) {
         return res.status(500).send(err); //todo
     }
 });
 
 //todo
-router.post('/logout', /*  */ async ({ body: { email, password } }, res) => {
+router.post('/logout', /*  auth, */ async (req, res) => {
     try {
         //todo
     } catch (err) {
