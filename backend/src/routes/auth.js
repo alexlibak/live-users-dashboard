@@ -8,7 +8,4 @@ const { authController } = require('../controllers/index');
 router.post('/signup', validateSignUp, authController.authSignUp);
 router.post('/login', validateLogin, authController.authLogin);
 
-//todo
-router.post('/logout', /*  auth, */);
-
 module.exports = router;

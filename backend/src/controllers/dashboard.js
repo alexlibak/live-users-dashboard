@@ -13,14 +13,14 @@ const homepage = async (req, res) => {
     }
 };
 
-const getPosts =  async ({ query: { userId }}, res) => {
+const getPosts =  async ({ params: { userId }}, res) => {
     try {
-        const posts = await Post.find({userId});
+        const posts = await Post.find({ userId });
         return res.status(200).json(posts);
     }
     catch(err) {
         console.error(err.message);
-        return res.status(500).send(err);
+        return res.status(404).send({error: "Not found!"});
     }
 };
 
@@ -31,7 +31,7 @@ const createPost = async({ body: { title, text, userId }}, res) => {
     }
     catch(err) {
         console.error(err.message);
-        return res.status(500).send(err);
+        return res.status(500).send({ errror: "Internal Server Error"});
     }
 };
 

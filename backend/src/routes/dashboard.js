@@ -6,7 +6,7 @@ const router = Router();
 const { dashboardController } = require('../controllers/index');
 
 router.get('/', dashboardController.homepage);
-router.get('/posts', dashboardController.getPosts);
+router.get('/posts/:userId', dashboardController.getPosts);
 router.post('/posts', dashboardController.createPost);
 
 module.exports = router;
