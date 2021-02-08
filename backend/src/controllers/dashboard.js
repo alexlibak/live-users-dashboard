@@ -1,6 +1,9 @@
 'use strict';
 
-const Post = require('../models/post');
+const Post = require('../models/post')
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 //homepage
 const homepage = async (req, res) => {
@@ -24,8 +27,10 @@ const getPosts =  async ({ params: { userId }}, res) => {
     }
 };
 
-const createPost = async({ body: { title, text, userId }}, res) => {
+const createPost = async(req, res) => {
+    const { title, text, userId, token } = req.body;
     try {
+        req.user = jwt.verify(token, JWT_SECRET);
         const post = await new Post({ title, text, userId }).save();
         return res.status(200).json(post);
     }

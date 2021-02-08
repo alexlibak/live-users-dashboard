@@ -1,78 +1,103 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import './Auth.css';
 import { setUserSession } from '../../utils/common';
+const BACKEND_AUTH_URI = 'http://127.0.0.1:5505/api/auth/';
 
-async function authLogin({email, password}) {
+async function authLogin({email, password, name}, isSignup) {
+  const apiEndpoint = isSignup ? 'signup' : 'login';
+  const userData = {
+    email,
+    password,
+    ...(isSignup && {name})
+  }
     try {
-        const { data: { name, token } } = await axios.post('http://localhost:5505/api/auth/login',
-            { email, password }
-        );
-        console.log('userToken- >>>', name, token);
-        return { name, token };
+      debugger
+        const { data: { user, token } } = await axios.post(`${BACKEND_AUTH_URI}/${apiEndpoint}`, userData);
+        console.log('userToken- >>>', user, token);
+        return { user, token };
     }
     catch(error) {
         console.error(error);
     }
 };
-   
 
-
-export default function Auth({ setToken }) {
+export default function Auth(props) {
     const [ userDetails, setUserDetails ] = useState({ 
         name: "",
         email: "",
         password: ""
     });
-    
-    // const [ error, setError ] = useState("");
-
+    const [showName, setShowName] = React.useState(false)
+    const [ error, setError ] = useState(null);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const { name, email, password } = userDetails;
-        const jwtPayload = await authLogin({email, password});
+        const jwtPayload = await authLogin({email, password, name}, showName);
         
         if(jwtPayload) {
            setUserSession(jwtPayload);
+           props.history.push('/dashboard');
         }
     };
 
-    // const handleChange = async (e) => {
-    //     setUserDetails({...userDetails, [e.target.name]: e.target.value})
-    // };
 
+    const handleSignUpShowClick = (e) => {
+      setShowName(true);
+    };
 
-  return(
-    <div className="auth-wrapper">
-      <h2>Login</h2>
-      <form className="form" onSubmit={handleSubmit}>
-        {/* <label>
-          <p>Name</p>
-          <input type="text" onChange={e => setUserDetails({...userDetails, name: e.target.value})} value={userDetails.name} />
-        </label> */}
-        <div className="input-wrapper">
-          <input 
-            placeholder="Email" 
-            type="text" 
-            onChange={e => setUserDetails({...userDetails, email: e.target.value})} value={userDetails.email}
-          />
-        </div>
-        <div className="input-wrapper">
-          <input 
-            placeholder="Password" 
-            type="password" 
-            onChange={e => setUserDetails({...userDetails, password: e.target.value})} value={userDetails.password} 
-          />
-        </div>
-        <div className="btn-wrapper">
-          <button type="submit">Submit</button>
-        </div>
-        <div>
-        </div>
-      </form>
-    </div>
+    //doesnt work
+    // const Name = () => 
+    //     <div className="input-wrapper">
+    //         <input 
+    //             placeholder="Name" 
+    //             type="text" 
+    //             onChange={e => setUserDetails({...userDetails, name: e.target.value})} value={userDetails.name}
+    //           />
+    //       </div>
+
+    return(
+      <div className="auth-wrapper">
+        <h2>{showName ? 'SignUp' : 'Login' }</h2>
+        <form className="form" onSubmit={handleSubmit}>
+          { showName ? 
+              <div className="input-wrapper">
+              <input 
+                  placeholder="Name" 
+                  type="text" 
+                  onChange={e => setUserDetails({...userDetails, name: e.target.value})} value={userDetails.name}
+                />
+            </div> : null }
+
+          <div className="input-wrapper">
+            <input 
+              placeholder="Email" 
+              type="text" 
+              onChange={e => setUserDetails({...userDetails, email: e.target.value})} value={userDetails.email}
+            />
+          </div>
+          <div className="input-wrapper">
+            <input 
+              placeholder="Password" 
+              type="password" 
+              onChange={e => setUserDetails({...userDetails, password: e.target.value})} value={userDetails.password} 
+            />
+          </div>
+          <div className="signup-link-wrapper">
+            {showName ? 'Already registered?' : 'New?' }
+            <span className="signup-link-text" onClick={handleSignUpShowClick}>
+              {showName ? 'Signin' : 'Signup' }
+            </span>
+          </div>
+          <div className="btn-wrapper">
+            <button type="submit">Submit</button>
+          </div>
+          <div>
+          </div>
+        </form>
+      </div>
   )
 }
 

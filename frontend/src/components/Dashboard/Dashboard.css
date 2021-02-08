@@ -1,0 +1,19 @@
+.dashboard-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.posts-wrapper {
+    margin: 50px;
+    font-weight: 500;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.btn-dashboard {
+    margin-right: 10px;
+}

@@ -29,17 +29,14 @@ const authLogin = async ({ body: { email, password } }, res) => {
         if (!user) {
             return res.status(404).send({ error: 'user not found' });
         }
-
-        const token = jwt.sign({ id: user.id, name: user.name }, JWT_SECRET);
+        const { name, _id } = user;
+        const token = jwt.sign({ user: { name, _id } }, JWT_SECRET);
         res.cookie('token', token);
-        return res.status(200).send({ name: user.name, token });
+        return res.status(200).send({ user: { name, _id }, token });
     } catch (err) {
         return res.status(500).send(err);
     }
 };
-
-//todo
-//logout?
 
 module.exports = {
     authSignUp,
