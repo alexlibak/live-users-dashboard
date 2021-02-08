@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import axios from 'axios';
 import './Post.css';
@@ -14,7 +14,6 @@ async function createPost(postData) {
         console.error(error);
     }
 };
-   
 
 export default function Auth(props) {
     const user = getUser();

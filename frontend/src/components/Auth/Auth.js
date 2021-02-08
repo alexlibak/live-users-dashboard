@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import './Auth.css';
@@ -13,7 +13,6 @@ async function authLogin({email, password, name}, isSignup) {
     ...(isSignup && {name})
   }
     try {
-      debugger
         const { data: { user, token } } = await axios.post(`${BACKEND_AUTH_URI}/${apiEndpoint}`, userData);
         console.log('userToken- >>>', user, token);
         return { user, token };
