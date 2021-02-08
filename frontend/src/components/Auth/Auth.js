@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import './Auth.css';
 import { setUserSession } from '../../utils/common';
@@ -14,7 +13,6 @@ async function authLogin({email, password, name}, isSignup) {
   }
     try {
         const { data: { user, token } } = await axios.post(`${BACKEND_AUTH_URI}/${apiEndpoint}`, userData);
-        console.log('userToken- >>>', user, token);
         return { user, token };
     }
     catch(error) {
@@ -44,18 +42,8 @@ export default function Auth(props) {
 
 
     const handleSignUpShowClick = (e) => {
-      setShowName(true);
+      setShowName(!showName);
     };
-
-    //doesnt work
-    // const Name = () => 
-    //     <div className="input-wrapper">
-    //         <input 
-    //             placeholder="Name" 
-    //             type="text" 
-    //             onChange={e => setUserDetails({...userDetails, name: e.target.value})} value={userDetails.name}
-    //           />
-    //       </div>
 
     return(
       <div className="auth-wrapper">
@@ -99,7 +87,3 @@ export default function Auth(props) {
       </div>
   )
 }
-
-Auth.propTypes = {
-    setToken: PropTypes.func.isRequired
-  }
